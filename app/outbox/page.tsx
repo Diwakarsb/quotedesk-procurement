@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import rfx from "@/data/rfx.json";
+import { postJSON, getJSON, del } from "@/lib/api";
 
 type Mail = { id:string; to:string; vendor:string; subject:string;
   attachments:{filename:string;note?:string}[]; sent_at:string; status:string };
@@ -15,20 +16,17 @@ export default function Outbox() {
   const [err,setErr]       = useState<string|null>(null);
 
   async function load() {
-    const r = await fetch("/api/dispatch");
-    const d = await r.json();
-    if (d.ok) { setOutbox(d.outbox); setInbox(d.inbox); }
+    try {
+      const d = await getJSON("/api/dispatch");
+      if (d.ok) { setOutbox(d.outbox); setInbox(d.inbox); }
+    } catch (e:any) { setErr(e.message); }
   }
   useEffect(() => { load(); }, []);
 
   async function dispatch() {
     setBusy(true); setErr(null);
     try {
-      const r = await fetch("/api/dispatch", {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({ rfx }),
-      });
-      const d = await r.json();
+      const d = await postJSON("/api/dispatch", { rfx });
       if (!d.ok) setErr(d.error || "Dispatch failed");
       else { setOutbox(d.outbox); setInbox(d.inbox); }
     } catch (e:any) { setErr(e.message); }
@@ -36,9 +34,8 @@ export default function Outbox() {
   }
 
   async function reset() {
-    setBusy(true);
-    await fetch("/api/dispatch", { method:"DELETE" });
-    await load();
+    setBusy(true); setErr(null);
+    try { await del("/api/dispatch"); await load(); } catch (e:any) { setErr(e.message); }
     setBusy(false);
   }
 

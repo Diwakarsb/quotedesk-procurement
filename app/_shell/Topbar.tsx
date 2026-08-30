@@ -21,6 +21,8 @@ export default function Topbar() {
   async function reset() {
     if (!window.confirm("Reset the demo? This clears the outbox, any saved RFx draft, and the analyst history.")) return;
     setBusy(true);
+    // DELETE /api/dispatch → resetRuntime() clears outbox, draft-rfx and
+    // analyst-history in one go (all three KNOWN_KEYS).
     try { await fetch("/api/dispatch", { method: "DELETE" }); } catch {}
     setBusy(false);
     router.refresh();

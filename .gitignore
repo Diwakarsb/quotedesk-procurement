@@ -7,3 +7,5 @@ data/_runtime
 
 # build cache
 tsconfig.tsbuildinfo
+.vercel
+.env*

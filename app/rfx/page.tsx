@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { postJSON, getJSON, del } from "@/lib/api";
 
 const EXAMPLE =
   "30 lines of corrugated packaging for our Bengaluru and Hosur plants, about " +
@@ -20,7 +21,7 @@ export default function RfxCopilot() {
 
   // Restore a draft saved on the server so a refresh mid-demo doesn't lose it.
   useEffect(() => {
-    fetch("/api/rfx").then(r => r.json()).then(d => {
+    getJSON("/api/rfx").then(d => {
       if (d.ok && d.draft?.rfx) {
         setRfx(d.draft.rfx);
         setProv(d.draft.provider || "");
@@ -30,18 +31,14 @@ export default function RfxCopilot() {
   }, []);
 
   async function discard() {
-    await fetch("/api/rfx", { method:"DELETE" }).catch(() => {});
+    await del("/api/rfx").catch(() => {});
     setRfx(null); setRestored(null); setProv("");
   }
 
   async function call(body: any, mode: "draft"|"revise") {
     setBusy(mode); setErr(null);
     try {
-      const r = await fetch("/api/rfx", {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify(body),
-      });
-      const d = await r.json();
+      const d = await postJSON("/api/rfx", body);
       if (!d.ok) setErr(d.error || "The co-pilot could not draft that.");
       else { setRfx(d.rfx); setProv(d.provider || ""); setRefine(""); setRestored(null); }
     } catch (e:any) { setErr(e.message); }
@@ -51,11 +48,7 @@ export default function RfxCopilot() {
   async function send() {
     setBusy("send"); setErr(null);
     try {
-      const r = await fetch("/api/dispatch", {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({ rfx }),
-      });
-      const d = await r.json();
+      const d = await postJSON("/api/dispatch", { rfx });
       if (!d.ok) { setErr(d.error || "Dispatch failed"); setBusy(""); return; }
       router.push("/outbox");
     } catch (e:any) { setErr(e.message); setBusy(""); }

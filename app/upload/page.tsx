@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
+import { postForm } from "@/lib/api";
 
 const STATE_PILL: Record<string, string> = {
   quoted: "pill-ok",
@@ -22,11 +23,10 @@ export default function Upload() {
     const t0 = Date.now();
     try {
       const fd = new FormData(); fd.append("file", file);
-      const r = await fetch("/api/extract", { method:"POST", body:fd });
-      const d = await r.json();
+      const d = await postForm("/api/extract", fd);
       setElapsed((Date.now() - t0) / 1000);
       if (!d.ok) setErr(d.error || "Extraction failed"); else setRes(d.result);
-    } catch (e:any) { setErr(e.message); }
+    } catch (e:any) { setElapsed((Date.now() - t0) / 1000); setErr(e.message); }
     setBusy(false);
   }
 

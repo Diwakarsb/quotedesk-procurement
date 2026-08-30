@@ -162,6 +162,18 @@ function turnHTML(t, id){
 
 let busy=false;
 
+// Parse a response as JSON, but turn a timeout / platform error page (plain
+// text, not JSON) into a readable message instead of "Unexpected token".
+async function readJSON(r){
+  const text=await r.text();
+  try{ return JSON.parse(text); }
+  catch{
+    if(r.status===504||/timed out|timeout|FUNCTION_INVOCATION_TIMEOUT/i.test(text))
+      throw new Error("The analyst timed out — the model took longer than 60s. Try again, or switch to a faster model (see DEPLOY.md).");
+    throw new Error(`Server error (HTTP ${r.status}). `+text.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim().slice(0,140));
+  }
+}
+
 async function ask(q){
   q=(q||"").trim();
   if(!q||busy) return;
@@ -182,7 +194,7 @@ async function ask(q){
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({question:q}),
     });
-    const d=await r.json();
+    const d=await readJSON(r);
     if(!d.ok) throw new Error(d.error||"The analyst could not answer that.");
     const id=++turnSeq;
     turnStore.set(id,{q,result:d.result});
@@ -245,7 +257,7 @@ async function init(){
   hideClear();
   try{
     const r=await fetch("/api/analyst/history");
-    const d=await r.json();
+    const d=await readJSON(r);
     const turns=(d&&d.ok&&Array.isArray(d.turns))?d.turns:[];
     if(turns.length){
       for(const t of turns){

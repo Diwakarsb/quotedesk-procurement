@@ -48,11 +48,14 @@ export async function POST(req: NextRequest) {
     ];
 
     // Large schema — give it room. Truncation at a low token cap is the usual
-    // cause of a JSON parse failure here. Retry once on a bad parse.
+    // cause of a JSON parse failure. Retry once, but only if there's time left
+    // inside the 60s function budget (a second slow call would just 504).
+    const started = Date.now();
     let rfx: any;
     try {
       rfx = parseJSONLoose(await provider.complete(parts, 0, 8000));
-    } catch {
+    } catch (e) {
+      if (Date.now() - started > 32_000) throw e; // no room for a retry
       rfx = parseJSONLoose(await provider.complete(parts, 0, 8000));
     }
 
