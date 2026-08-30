@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getFastProvider } from "@/lib/providers";
+import { getProviderWithFallback } from "@/lib/providers";
 import { RFX_COPILOT_SCHEMA } from "@/lib/schema";
 import { parseJSONLoose } from "@/lib/extract";
 import { readJSON, writeJSON, removeJSON } from "@/lib/store";
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: "No brief supplied" }, { status: 400 });
     }
 
-    const provider = getFastProvider();
+    const provider = getProviderWithFallback();
     const parts = [
       { text: RFX_COPILOT_SCHEMA },
       current
