@@ -1,0 +1,422 @@
+{
+ "rfx_id": "RFX-2026-0417",
+ "buyer": "Meridian Consumer Products Pvt Ltd",
+ "category": "Corrugated Packaging",
+ "canonical_uom": "per_box",
+ "canonical_currency": "INR",
+ "issue_date": "2026-08-04",
+ "due_date": "2026-08-13",
+ "fx_reference_date": "2026-08-13",
+ "lines": [
+  {
+   "line_no": 1,
+   "sku": "MCP-RSC-001",
+   "description": "RSC Carton, Outer Shipper, Brown",
+   "ply": 5,
+   "flute": "BC",
+   "dims_mm": "600x400x400",
+   "gsm": 1200,
+   "bursting_strength_kgf": 16.0,
+   "annual_qty": 240000,
+   "unit_weight_kg": 2.4
+  },
+  {
+   "line_no": 2,
+   "sku": "MCP-RSC-002",
+   "description": "RSC Carton, Outer Shipper, Brown",
+   "ply": 5,
+   "flute": "BC",
+   "dims_mm": "600x400x300",
+   "gsm": 1150,
+   "bursting_strength_kgf": 16.0,
+   "annual_qty": 180000,
+   "unit_weight_kg": 2.05
+  },
+  {
+   "line_no": 3,
+   "sku": "MCP-RSC-003",
+   "description": "RSC Carton, Outer Shipper, Brown",
+   "ply": 5,
+   "flute": "BC",
+   "dims_mm": "450x300x300",
+   "gsm": 980,
+   "bursting_strength_kgf": 14.0,
+   "annual_qty": 320000,
+   "unit_weight_kg": 1.35
+  },
+  {
+   "line_no": 4,
+   "sku": "MCP-RSC-004",
+   "description": "RSC Carton, Outer Shipper, White Top",
+   "ply": 5,
+   "flute": "BC",
+   "dims_mm": "600x400x400",
+   "gsm": 1250,
+   "bursting_strength_kgf": 16.0,
+   "annual_qty": 96000,
+   "unit_weight_kg": 2.55
+  },
+  {
+   "line_no": 5,
+   "sku": "MCP-RSC-005",
+   "description": "RSC Carton, Inner Pack, Brown",
+   "ply": 3,
+   "flute": "B",
+   "dims_mm": "400x300x200",
+   "gsm": 620,
+   "bursting_strength_kgf": 9.0,
+   "annual_qty": 480000,
+   "unit_weight_kg": 0.62
+  },
+  {
+   "line_no": 6,
+   "sku": "MCP-RSC-006",
+   "description": "RSC Carton, Inner Pack, Brown",
+   "ply": 3,
+   "flute": "B",
+   "dims_mm": "300x200x150",
+   "gsm": 520,
+   "bursting_strength_kgf": 8.0,
+   "annual_qty": 640000,
+   "unit_weight_kg": 0.38
+  },
+  {
+   "line_no": 7,
+   "sku": "MCP-RSC-007",
+   "description": "RSC Carton, Inner Pack, Brown",
+   "ply": 3,
+   "flute": "B",
+   "dims_mm": "250x200x150",
+   "gsm": 480,
+   "bursting_strength_kgf": 8.0,
+   "annual_qty": 520000,
+   "unit_weight_kg": 0.31
+  },
+  {
+   "line_no": 8,
+   "sku": "MCP-RSC-008",
+   "description": "RSC Carton, E-comm Ship, Brown",
+   "ply": 3,
+   "flute": "E",
+   "dims_mm": "350x250x120",
+   "gsm": 450,
+   "bursting_strength_kgf": 7.0,
+   "annual_qty": 850000,
+   "unit_weight_kg": 0.26
+  },
+  {
+   "line_no": 9,
+   "sku": "MCP-RSC-009",
+   "description": "RSC Carton, E-comm Ship, Brown",
+   "ply": 3,
+   "flute": "E",
+   "dims_mm": "250x180x100",
+   "gsm": 420,
+   "bursting_strength_kgf": 7.0,
+   "annual_qty": 920000,
+   "unit_weight_kg": 0.19
+  },
+  {
+   "line_no": 10,
+   "sku": "MCP-RSC-010",
+   "description": "RSC Carton, E-comm Ship, White Top",
+   "ply": 3,
+   "flute": "E",
+   "dims_mm": "350x250x120",
+   "gsm": 470,
+   "bursting_strength_kgf": 7.0,
+   "annual_qty": 210000,
+   "unit_weight_kg": 0.28
+  },
+  {
+   "line_no": 11,
+   "sku": "MCP-DIE-011",
+   "description": "Die-cut Mailer, Self-lock, Brown",
+   "ply": 3,
+   "flute": "E",
+   "dims_mm": "300x220x080",
+   "gsm": 430,
+   "bursting_strength_kgf": 7.0,
+   "annual_qty": 660000,
+   "unit_weight_kg": 0.22
+  },
+  {
+   "line_no": 12,
+   "sku": "MCP-DIE-012",
+   "description": "Die-cut Mailer, Self-lock, Brown",
+   "ply": 3,
+   "flute": "E",
+   "dims_mm": "220x160x060",
+   "gsm": 400,
+   "bursting_strength_kgf": 6.5,
+   "annual_qty": 740000,
+   "unit_weight_kg": 0.15
+  },
+  {
+   "line_no": 13,
+   "sku": "MCP-DIE-013",
+   "description": "Die-cut Mailer, Printed 2-colour",
+   "ply": 3,
+   "flute": "E",
+   "dims_mm": "300x220x080",
+   "gsm": 450,
+   "bursting_strength_kgf": 7.0,
+   "annual_qty": 180000,
+   "unit_weight_kg": 0.24
+  },
+  {
+   "line_no": 14,
+   "sku": "MCP-DIE-014",
+   "description": "Die-cut Tray, Open Top",
+   "ply": 3,
+   "flute": "B",
+   "dims_mm": "400x300x100",
+   "gsm": 560,
+   "bursting_strength_kgf": 8.0,
+   "annual_qty": 145000,
+   "unit_weight_kg": 0.34
+  },
+  {
+   "line_no": 15,
+   "sku": "MCP-DIE-015",
+   "description": "Die-cut Tray, Open Top",
+   "ply": 3,
+   "flute": "B",
+   "dims_mm": "300x200x080",
+   "gsm": 500,
+   "bursting_strength_kgf": 8.0,
+   "annual_qty": 168000,
+   "unit_weight_kg": 0.24
+  },
+  {
+   "line_no": 16,
+   "sku": "MCP-PRT-016",
+   "description": "Printed Shipper, 3-colour Flexo",
+   "ply": 5,
+   "flute": "BC",
+   "dims_mm": "600x400x400",
+   "gsm": 1250,
+   "bursting_strength_kgf": 16.0,
+   "annual_qty": 72000,
+   "unit_weight_kg": 2.48
+  },
+  {
+   "line_no": 17,
+   "sku": "MCP-PRT-017",
+   "description": "Printed Shipper, 3-colour Flexo",
+   "ply": 5,
+   "flute": "BC",
+   "dims_mm": "450x300x300",
+   "gsm": 1020,
+   "bursting_strength_kgf": 14.0,
+   "annual_qty": 88000,
+   "unit_weight_kg": 1.42
+  },
+  {
+   "line_no": 18,
+   "sku": "MCP-PRT-018",
+   "description": "Printed Carton, Litho-lam, 4-colour",
+   "ply": 3,
+   "flute": "E",
+   "dims_mm": "350x250x120",
+   "gsm": 520,
+   "bursting_strength_kgf": 7.5,
+   "annual_qty": 54000,
+   "unit_weight_kg": 0.31
+  },
+  {
+   "line_no": 19,
+   "sku": "MCP-HD-019",
+   "description": "Heavy Duty Shipper, Export Grade",
+   "ply": 7,
+   "flute": "BCA",
+   "dims_mm": "800x600x600",
+   "gsm": 1850,
+   "bursting_strength_kgf": 22.0,
+   "annual_qty": 36000,
+   "unit_weight_kg": 5.2
+  },
+  {
+   "line_no": 20,
+   "sku": "MCP-HD-020",
+   "description": "Heavy Duty Shipper, Export Grade",
+   "ply": 7,
+   "flute": "BCA",
+   "dims_mm": "600x400x500",
+   "gsm": 1620,
+   "bursting_strength_kgf": 20.0,
+   "annual_qty": 42000,
+   "unit_weight_kg": 3.6
+  },
+  {
+   "line_no": 21,
+   "sku": "MCP-PAR-021",
+   "description": "Partition Set, 6-cell",
+   "ply": 3,
+   "flute": "B",
+   "dims_mm": "580x380x380",
+   "gsm": 480,
+   "bursting_strength_kgf": 8.0,
+   "annual_qty": 240000,
+   "unit_weight_kg": 0.42
+  },
+  {
+   "line_no": 22,
+   "sku": "MCP-PAR-022",
+   "description": "Partition Set, 9-cell",
+   "ply": 3,
+   "flute": "B",
+   "dims_mm": "580x380x380",
+   "gsm": 520,
+   "bursting_strength_kgf": 8.0,
+   "annual_qty": 120000,
+   "unit_weight_kg": 0.55
+  },
+  {
+   "line_no": 23,
+   "sku": "MCP-PAD-023",
+   "description": "Layer Pad, 2-ply",
+   "ply": 2,
+   "flute": "B",
+   "dims_mm": "600x400x003",
+   "gsm": 340,
+   "bursting_strength_kgf": 5.0,
+   "annual_qty": 900000,
+   "unit_weight_kg": 0.18
+  },
+  {
+   "line_no": 24,
+   "sku": "MCP-PAD-024",
+   "description": "Layer Pad, 2-ply",
+   "ply": 2,
+   "flute": "B",
+   "dims_mm": "450x300x003",
+   "gsm": 300,
+   "bursting_strength_kgf": 5.0,
+   "annual_qty": 780000,
+   "unit_weight_kg": 0.11
+  },
+  {
+   "line_no": 25,
+   "sku": "MCP-SLV-025",
+   "description": "Wrap-around Sleeve, Printed",
+   "ply": 3,
+   "flute": "E",
+   "dims_mm": "420x300x090",
+   "gsm": 460,
+   "bursting_strength_kgf": 7.0,
+   "annual_qty": 195000,
+   "unit_weight_kg": 0.25
+  },
+  {
+   "line_no": 26,
+   "sku": "MCP-SLV-026",
+   "description": "Wrap-around Sleeve, Plain",
+   "ply": 3,
+   "flute": "E",
+   "dims_mm": "420x300x090",
+   "gsm": 430,
+   "bursting_strength_kgf": 7.0,
+   "annual_qty": 260000,
+   "unit_weight_kg": 0.23
+  },
+  {
+   "line_no": 27,
+   "sku": "MCP-TEL-027",
+   "description": "Telescopic Box, Lid + Base",
+   "ply": 5,
+   "flute": "BC",
+   "dims_mm": "500x400x300",
+   "gsm": 1080,
+   "bursting_strength_kgf": 15.0,
+   "annual_qty": 66000,
+   "unit_weight_kg": 2.1
+  },
+  {
+   "line_no": 28,
+   "sku": "MCP-TEL-028",
+   "description": "Telescopic Box, Lid + Base",
+   "ply": 5,
+   "flute": "BC",
+   "dims_mm": "400x300x250",
+   "gsm": 920,
+   "bursting_strength_kgf": 14.0,
+   "annual_qty": 78000,
+   "unit_weight_kg": 1.48
+  },
+  {
+   "line_no": 29,
+   "sku": "MCP-FEF-029",
+   "description": "FEFCO 0201 Case, Moisture Resistant",
+   "ply": 5,
+   "flute": "BC",
+   "dims_mm": "550x350x350",
+   "gsm": 1140,
+   "bursting_strength_kgf": 18.0,
+   "annual_qty": 110000,
+   "unit_weight_kg": 2.02
+  },
+  {
+   "line_no": 30,
+   "sku": "MCP-FEF-030",
+   "description": "FEFCO 0427 Case, Moisture Resistant",
+   "ply": 3,
+   "flute": "B",
+   "dims_mm": "400x300x200",
+   "gsm": 660,
+   "bursting_strength_kgf": 10.0,
+   "annual_qty": 130000,
+   "unit_weight_kg": 0.66
+  }
+ ],
+ "questionnaire": [
+  {
+   "ref": "Q1",
+   "question": "BRC Packaging or ISO 22000 certification held? State certificate number and expiry.",
+   "category": "compliance",
+   "mandatory": true
+  },
+  {
+   "ref": "Q2",
+   "question": "FSC Chain-of-Custody certified? State licence code.",
+   "category": "sustainability",
+   "mandatory": true
+  },
+  {
+   "ref": "Q3",
+   "question": "Percentage of recycled fibre content in supplied board.",
+   "category": "sustainability",
+   "mandatory": false
+  },
+  {
+   "ref": "Q4",
+   "question": "Monthly production capacity in tonnes, and current committed utilisation %.",
+   "category": "capacity",
+   "mandatory": true
+  },
+  {
+   "ref": "Q5",
+   "question": "Standard lead time in days for repeat SKUs, and for new die development.",
+   "category": "delivery",
+   "mandatory": true
+  },
+  {
+   "ref": "Q6",
+   "question": "Number of manufacturing locations able to serve Bengaluru and Hosur plants.",
+   "category": "capacity",
+   "mandatory": false
+  },
+  {
+   "ref": "Q7",
+   "question": "Do you accept a bursting strength penalty clause at 2% of line value per failed lot?",
+   "category": "quality",
+   "mandatory": true
+  },
+  {
+   "ref": "Q8",
+   "question": "Payment terms offered, and any early payment discount.",
+   "category": "commercial",
+   "mandatory": true
+  }
+ ]
+}

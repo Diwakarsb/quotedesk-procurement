@@ -1,0 +1,24 @@
+{
+  "name": "quotedesk",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "selftest": "node scripts_selftest.mjs"
+  },
+  "dependencies": {
+    "mammoth": "1.8.0",
+    "next": "14.2.5",
+    "pdf-parse": "1.1.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "xlsx": "0.18.5"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.10",
+    "@types/react": "18.3.3",
+    "typescript": "^5.5.3"
+  }
+}

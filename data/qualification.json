@@ -1,0 +1,42 @@
+{
+ "Shakti Packaging":{
+  "Q1":{"pass":false,"answer":"ISO 9001:2015 only. BRC audit scheduled Nov 2026, not yet certified.","evidence":"BRC audit is scheduled for Nov 2026, not yet certified"},
+  "Q2":{"pass":false,"answer":"Not FSC certified. Can source FSC board at ~4% premium.","evidence":"Not FSC certified at present"},
+  "Q4":{"pass":true,"answer":"4,200 MT/month, 71% utilised"},
+  "Q5":{"pass":true,"answer":"10-12 days repeat, 18-21 days new die"},
+  "Q7":{"pass":false,"answer":"Counter-offers 1% cap, not 2%"},
+  "Q8":{"pass":false,"answer":"Wants 30 days (RFx asks 60). 1.5% discount if paid in 10 days."}
+ },
+ "Continental Corrugators":{
+  "Q1":{"pass":true,"answer":"BRC Packaging Issue 6, cert BRC-PKG-2024-11893, valid to 28 Feb 2028"},
+  "Q2":{"pass":true,"answer":"FSC CoC licence FSC-C119847"},
+  "Q4":{"pass":true,"answer":"6,800 MT/month, 64% utilised"},
+  "Q5":{"pass":true,"answer":"14 days repeat, 24 days new die"},
+  "Q7":{"pass":true,"answer":"Accepted without modification"},
+  "Q8":{"pass":true,"answer":"Net 60 accepted. 2.5% rebate if paid within 15 days (footnote 4)."}
+ },
+ "NovaPack Industries":{
+  "Q1":{"pass":false,"answer":"ISO 22000:2018 held (IN22K-2023-8841). NOT BRC certified.","evidence":"we are not BRC certified"},
+  "Q2":{"pass":false,"answer":"No FSC CoC. Supplier is certified but NovaPack is not.","evidence":"We do not hold FSC chain of custody at present"},
+  "Q4":{"pass":true,"answer":"3,100 MT/month, 58% utilised"},
+  "Q5":{"pass":true,"answer":"16 days repeat, 22 days new die"},
+  "Q7":{"pass":true,"answer":"Agreeable to 2% penalty as drafted"},
+  "Q8":{"pass":false,"answer":"Wants 45 days (RFx asks 60). No early discount."}
+ },
+ "Global Fibre Solutions":{
+  "Q1":{"pass":true,"answer":"BRC Packaging cert BRC-AE-2025-0774, valid to 31 Jan 2028"},
+  "Q2":{"pass":true,"answer":"FSC CoC FSC-C147732"},
+  "Q4":{"pass":true,"answer":"9,200 MT/month, 47% utilised"},
+  "Q5":{"pass":false,"answer":"28 days production + 18 days transit = 46 days total"},
+  "Q7":{"pass":true,"answer":"Accepted at 2% as drafted"},
+  "Q8":{"pass":false,"answer":"Irrevocable LC at sight. No credit terms for first order."}
+ },
+ "Ashoka Boards":{
+  "Q1":{"pass":false,"answer":"Questionnaire not answered","evidence":"[no response on sheet]"},
+  "Q2":{"pass":false,"answer":"Questionnaire not answered","evidence":"[no response on sheet]"},
+  "Q4":{"pass":false,"answer":"Not answered"},
+  "Q5":{"pass":false,"answer":"Not answered"},
+  "Q7":{"pass":false,"answer":"Not answered"},
+  "Q8":{"pass":false,"answer":"Demands 21 days - worse than RFx terms","evidence":"payment 21 days please - we are small unit"}
+ }
+}

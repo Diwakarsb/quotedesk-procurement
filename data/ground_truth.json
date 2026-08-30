@@ -1,0 +1,147 @@
+{
+ "fx_rate_used_by_gfs": 88.4,
+ "note": "Ground truth for grading extraction. NOT loaded by the app at runtime.",
+ "vendors": {
+  "V1_Shakti": {
+   "quoted_lines": 29,
+   "omitted": [
+    13
+   ],
+   "poa": [
+    19
+   ],
+   "native_uom": "per_kg",
+   "currency": "INR",
+   "edges": [
+    "rate quoted per KG not per box - requires unit_weight conversion",
+    "line 13 silently absent from the sheet",
+    "line 19 quoted as POA (price on application) - unresolvable",
+    "freight quoted per 32ft truck (~7.5MT), not per box - requires allocation",
+    "merged two-row header, vendor's own column order",
+    "ex-works Peenya unless freight opted",
+    "payment 30 days (vs 60 asked); 1.5% discount if paid in 10 days",
+    "BRC NOT held - only ISO 9001; Q1 mandatory effectively failed",
+    "not FSC certified - Q2 mandatory effectively failed",
+    "penalty clause counter-offered at 1% not 2%"
+   ]
+  },
+  "V2_Continental": {
+   "quoted_lines": 30,
+   "omitted": [],
+   "poa": [],
+   "native_uom": "per_box",
+   "currency": "INR",
+   "edges": [
+    "2.5% early settlement rebate BURIED IN FOOTNOTE 4 - not in unit rates",
+    "rates are EX-WORKS Sriperumbudur despite a freight column - footnote 3",
+    "Hosur delivery +INR 0.28/box NOT included anywhere in the table",
+    "only vendor answering all 30 lines and both mandatory certs",
+    "kraft index escalation clause at 8% - contradicts 'firm 12 months' term"
+   ]
+  },
+  "V3_NovaPack": {
+   "quoted_lines": 24,
+   "omitted": [
+    21,
+    22,
+    23,
+    24,
+    29,
+    30
+   ],
+   "poa": [],
+   "native_uom": "per_box",
+   "currency": "INR",
+   "edges": [
+    "ALL commercials in prose paragraphs - no table anywhere",
+    "line 1 has TIERED price: above 200k qty vs below - must pick the tier matching RFx qty 240000",
+    "lines 19,20 rates conditional on upfront annual volume commitment, else +6%",
+    "E-flute lines 8,9,10 carry +INR 0.35/box handling below 20k call-off",
+    "telescopic lines 27,28 priced PER SET (lid+base) - buyer may read as per component",
+    "6 lines explicitly declined with reasons",
+    "freight INCLUDED for Bengaluru, +0.22/box Hosur - different basis from V1/V2",
+    "ISO 22000 held but BRC NOT - Q1 mandatory effectively failed",
+    "no FSC - Q2 mandatory effectively failed",
+    "payment 45 days sought vs 60 asked; no early discount"
+   ]
+  },
+  "V4_GlobalFibre": {
+   "quoted_lines": 26,
+   "omitted": [
+    13,
+    18,
+    21,
+    22
+   ],
+   "poa": [],
+   "native_uom": "per_100_pieces",
+   "currency": "USD",
+   "glare_obscured": [
+    8,
+    9,
+    10
+   ],
+   "edges": [
+    "USD currency - needs FX conversion at RBI ref rate on due date 2026-08-13",
+    "priced PER 100 PIECES - needs divide by 100 AND currency conversion",
+    "angled phone photo - perspective distortion",
+    "GLARE makes lines 8,9,10 unreadable - must be flagged, never guessed",
+    "FOB Jebel Ali - ocean freight USD 1850/40ft container NOT allocated per box",
+    "customs duty + IGST + inland haulage excluded entirely - landed cost is much higher",
+    "MOQ 50,000 pcs/SKU - far above buyer's call-off pattern",
+    "lead time 28d + 18d transit = 46 days vs 14 day benchmark",
+    "LC at sight - no credit terms; working capital impact",
+    "BOTH mandatory certs held (BRC + FSC) - only V2 and V4 clear Q1 and Q2"
+   ]
+  },
+  "V5_Ashoka": {
+   "quoted_lines": "~2 grades only",
+   "omitted": "most",
+   "poa": [],
+   "native_uom": "per_kg",
+   "currency": "INR",
+   "edges": [
+    "HANDWRITTEN - requires vision OCR of cursive-style hand, not typed text",
+    "priced by GRADE (5 ply = 42/kg, 3 ply = 38/kg) NOT by line item - must NOT be fanned across 30 lines automatically",
+    "rate quoted per KG not per box - needs unit_weight conversion, but only after grade->line mapping is confirmed by a human",
+    "'same as last year' in REMARKS column - UNRESOLVABLE, no prior contract in system",
+    "'rest items - same as last year' - a second unresolvable reference",
+    "7 ply explicitly declined ('not doing now') - lines 19,20",
+    "partitions + layer pads: 'after sample', 'send 1 pc courier' - conditional, no price",
+    "no 2-ply rate at all (lines 23,24)",
+    "freight extra, quantum unstated; GST extra",
+    "payment 21 days demanded - worst terms of any vendor",
+    "questionnaire entirely unanswered - all 8 questions blank, both mandatory certs missing",
+    "incumbent since 2019 claim written on the sheet - relationship context the grid cannot price"
+   ],
+   "format": "handwritten rate sheet on vendor letterpad, photographed at an angle"
+  }
+ },
+ "expected_system_behaviour": {
+  "must_flag_never_guess": [
+   "V4 lines 8,9,10 (glare)",
+   "V5 'rest same as last year'",
+   "V1 line 19 POA",
+   "V5 partitions/layer pads pending sample",
+   "V5 grade-level rate must NOT be auto-expanded to all 5-ply/3-ply lines without buyer confirmation"
+  ],
+  "must_derive_and_show_working": [
+   "V1 per_kg -> per_box via unit_weight_kg",
+   "V4 USD/100pcs -> INR/box via /100 then x FX",
+   "V5 per_kg -> per_box for 5ply/3ply grades only"
+  ],
+  "must_surface_from_fine_print": [
+   "V2 2.5% early payment rebate",
+   "V2 ex-works basis + Hosur surcharge",
+   "V3 tiered price on line 1",
+   "V3 telescopic priced per set",
+   "V4 FOB + duty exclusions"
+  ],
+  "comparability_traps": [
+   "V4 looks cheapest on face value but is FOB pre-duty pre-freight",
+   "V1 looks cheap per kg but fails both mandatory certs",
+   "cheapest-per-line across all 5 is NOT awardable - only V2 and V4 clear the questionnaire"
+  ],
+  "handwriting_test": "V5 is the OCR stress case: if the system silently misreads 42 as 4.2 or 92, the trust story collapses. Confidence must drop and the buyer must be shown the crop."
+ }
+}

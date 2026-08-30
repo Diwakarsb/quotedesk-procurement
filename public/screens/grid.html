@@ -1,0 +1,39 @@
+
+<header>
+  <div>
+    <div class="brand">Quote Comparison <span>/ Meridian Consumer Products</span></div>
+    <div class="ref">RFX-2026-0417 &middot; Corrugated Packaging &middot; Annual Rate Contract FY27</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="kpis">
+    <div class="kpi"><b class="tnum">30</b><small>Lines</small></div>
+    <div class="kpi"><b class="tnum">5</b><small>Vendors</small></div>
+    <div class="kpi"><b class="tnum" id="kCov">—</b><small>Comparable</small></div>
+    <div class="kpi"><b class="tnum" id="kUns">—</b><small>Unresolved</small></div>
+  </div>
+</header>
+
+<div class="legend">
+  <span class="chip c-ok"><i></i>Extracted &mdash; vendor stated it</span>
+  <span class="chip c-drv"><i></i>Derived &mdash; we converted it</span>
+  <span class="chip c-uns"><i></i>Unresolved &mdash; never estimated</span>
+  <span class="note">Click any cell to see the vendor's exact words.</span>
+  <div class="seg" role="group" aria-label="Cost basis">
+    <button id="bList" class="segb on">List rate</button>
+    <button id="bLand" class="segb">Landed cost</button>
+  </div>
+  <button class="lbtn" id="openLedger">Assumptions (<span id="aCount">0</span>)</button>
+</div>
+
+<div class="wrap"><table id="grid"><thead></thead><tbody></tbody></table></div>
+
+<div class="scrim" id="scrim"></div>
+<aside id="drawer" aria-hidden="true">
+  <header>
+    <h2 id="dTitle">Assumption ledger</h2>
+    <p id="dSub">Every transformation applied to a vendor's numbers.</p>
+    <button class="close" id="closeD" aria-label="Close">&times;</button>
+  </header>
+  <div id="dContent" class="abody"></div>
+</aside>
+
