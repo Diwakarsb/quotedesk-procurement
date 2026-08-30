@@ -3,7 +3,7 @@ import { extractDocument } from "@/lib/extract";
 import rfx from "@/data/rfx.json";
 
 export const runtime = "nodejs";
-export const maxDuration = 120;
+export const maxDuration = 60; // Vercel Hobby ceiling
 
 export async function POST(req: NextRequest) {
   try {

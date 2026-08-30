@@ -1,23 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sendMail, readOutbox, readInbox, resetRuntime, clearRfx, VENDOR_BOOK } from "@/lib/mail";
+import { sendMail, saveOutbound, readOutbox, readInbox, resetRuntime, clearRfx, VENDOR_BOOK } from "@/lib/mail";
 
 export const runtime = "nodejs";
 
 /** GET → current outbox + inbox, for the /outbox screen. */
 export async function GET() {
-  return NextResponse.json({ ok: true, outbox: readOutbox(), inbox: readInbox() });
+  return NextResponse.json({ ok: true, outbox: await readOutbox(), inbox: await readInbox() });
 }
 
 /** DELETE → wipe ALL runtime state (outbox, saved RFx draft, analyst history)
- *  so a demo can start clean. resetRuntime() removes the whole data/_runtime dir. */
+ *  so a demo can start clean. */
 export async function DELETE() {
-  resetRuntime();
-  return NextResponse.json({ ok: true, outbox: [], inbox: readInbox() });
+  await resetRuntime();
+  return NextResponse.json({ ok: true, outbox: [], inbox: await readInbox() });
 }
 
 /**
  * POST { rfx } → "email" the RFx to the five vendors. No socket is opened;
- * sendMail() writes to the JSON outbox. Returns the outbox + inbox so the
+ * the batch is persisted in one write. Returns the outbox + inbox so the
  * screen can render the whole flow in one round-trip.
  */
 export async function POST(req: NextRequest) {
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     const qCount = Array.isArray(rfx.questionnaire) ? rfx.questionnaire.length : 0;
     const due: string = rfx.due_date || "14 days from receipt";
 
-    clearRfx(rfxId);
+    await clearRfx(rfxId);
     const sent = VENDOR_BOOK.map((v) =>
       sendMail({
         to: v.email,
@@ -52,12 +52,13 @@ export async function POST(req: NextRequest) {
         ],
       }),
     );
+    await saveOutbound(sent);
 
     return NextResponse.json({
       ok: true,
       dispatched: sent.length,
-      outbox: readOutbox(),
-      inbox: readInbox(),
+      outbox: await readOutbox(),
+      inbox: await readInbox(),
     });
   } catch (e: any) {
     return NextResponse.json({ ok: false, error: e.message }, { status: 500 });

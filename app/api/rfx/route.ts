@@ -5,18 +5,18 @@ import { parseJSONLoose } from "@/lib/extract";
 import { readJSON, writeJSON, removeJSON } from "@/lib/store";
 
 export const runtime = "nodejs";
-export const maxDuration = 120;
+export const maxDuration = 60; // Vercel Hobby ceiling
 
 const DRAFT = "draft-rfx";
 
 /** GET → the last drafted RFx, so /rfx can restore it after a refresh. */
 export async function GET() {
-  return NextResponse.json({ ok: true, draft: readJSON(DRAFT, null) });
+  return NextResponse.json({ ok: true, draft: await readJSON(DRAFT, null) });
 }
 
 /** DELETE → discard the saved draft. */
 export async function DELETE() {
-  removeJSON(DRAFT);
+  await removeJSON(DRAFT);
   return NextResponse.json({ ok: true });
 }
 
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
     rfx.rfx_id ||= "RFX-DRAFT";
 
     const draft = { rfx, provider: provider.name, saved_at: new Date().toISOString() };
-    writeJSON(DRAFT, draft);
+    await writeJSON(DRAFT, draft);
 
     return NextResponse.json({ ok: true, ...draft });
   } catch (e: any) {

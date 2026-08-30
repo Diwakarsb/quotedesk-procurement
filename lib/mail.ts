@@ -1,12 +1,9 @@
 /**
  * Faked SMTP. The brief allows this explicitly: "stub the plumbing … Fake the
- * SMTP server if you like." Nothing here opens a socket — sendMail() appends to
- * a JSON outbox on disk and logs a line. The point is that stages 1→2 of the
- * flow (draft an RFx → it goes to vendors) are *visible* in a demo, not that
- * mail is really delivered.
+ * SMTP server if you like." Nothing here opens a socket — sendMail() builds a
+ * record and logs a line; the dispatch route persists the batch via lib/store.
  *
- * Runtime state lives in data/_runtime/ (git-ignored, see lib/store.ts) so a
- * demo can be reset with `rm -rf data/_runtime`.
+ * Runtime state lives in Redis (prod) or data/_runtime (dev). See lib/store.ts.
  */
 import { readJSON, writeJSON, resetRuntime } from "./store";
 
@@ -36,12 +33,8 @@ export const VENDOR_BOOK = [
   { vendor: "Ashoka Boards",           email: "ashokaboards.blr@gmail.com",      reply_file: "V5_Ashoka_Boards_handwritten_ratesheet.jpg", reply_format: "Handwritten note" },
 ];
 
-export function readOutbox(): OutboundMail[] {
+export async function readOutbox(): Promise<OutboundMail[]> {
   return readJSON<OutboundMail[]>("outbox", []);
-}
-
-function writeOutbox(list: OutboundMail[]) {
-  writeJSON("outbox", list);
 }
 
 let seq = 0;
@@ -50,6 +43,7 @@ function mailId() {
   return `msg-${Date.now().toString(36)}-${seq}`;
 }
 
+/** Build one outbound record. Pure + synchronous — no I/O, no race. */
 export function sendMail(m: {
   to: string; vendor: string; from?: string; subject: string; body: string;
   attachments?: MailAttachment[]; rfx_id: string;
@@ -66,17 +60,21 @@ export function sendMail(m: {
     sent_at: new Date().toISOString(),
     status: "delivered",
   };
-  const list = readOutbox();
-  list.push(rec);
-  writeOutbox(list);
   // eslint-disable-next-line no-console
   console.log(`[MAIL] → ${rec.to}  "${rec.subject}"  (${rec.attachments.length} attachment(s))`);
   return rec;
 }
 
+/** Persist a batch of outbound records in one read-modify-write. */
+export async function saveOutbound(records: OutboundMail[]): Promise<void> {
+  const list = await readOutbox();
+  list.push(...records);
+  await writeJSON("outbox", list);
+}
+
 /** The faked inbound side: every vendor "replied" with the file in public/. */
-export function readInbox() {
-  const outbox = readOutbox();
+export async function readInbox() {
+  const outbox = await readOutbox();
   return VENDOR_BOOK.map((v) => {
     const sent = outbox.find((o) => o.vendor === v.vendor);
     return {
@@ -85,7 +83,6 @@ export function readInbox() {
       reply_file: v.reply_file,
       reply_format: v.reply_format,
       received: Boolean(sent),
-      // A reply only exists once the RFx has actually gone out.
       received_at: sent ? sent.sent_at : null,
       source_url: `/vendor-responses/${v.reply_file}`,
     };
@@ -93,7 +90,7 @@ export function readInbox() {
 }
 
 /** Drop any prior sends for an RFx so "re-send" replaces rather than stacks. */
-export function clearRfx(rfxId: string) {
-  const kept = readOutbox().filter((o) => o.rfx_id !== rfxId);
-  writeOutbox(kept);
+export async function clearRfx(rfxId: string): Promise<void> {
+  const kept = (await readOutbox()).filter((o) => o.rfx_id !== rfxId);
+  await writeJSON("outbox", kept);
 }

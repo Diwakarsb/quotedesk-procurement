@@ -9,6 +9,7 @@
     "selftest": "node scripts_selftest.mjs"
   },
   "dependencies": {
+    "@upstash/redis": "^1.38.3",
     "mammoth": "1.8.0",
     "next": "14.2.5",
     "pdf-parse": "1.1.1",

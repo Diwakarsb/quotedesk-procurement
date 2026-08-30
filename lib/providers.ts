@@ -140,7 +140,7 @@ export class OpenRouterProvider implements Provider {
   name = "openrouter";
   constructor(
     private key = process.env.OPENROUTER_API_KEY || "",
-    private model = process.env.OPENROUTER_MODEL || "google/gemini-2.0-flash-exp:free",
+    private model = process.env.OPENROUTER_MODEL || "minimax/minimax-m3:free",
     private baseUrl = process.env.OPENROUTER_BASE_URL || "https://openrouter.ai/api/v1",
   ) {
     if (!this.key) throw new ProviderError("OPENROUTER_API_KEY not set");
