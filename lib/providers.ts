@@ -197,3 +197,22 @@ export function getProviderWithFallback(order?: string[]): Provider {
     "No model provider available. Add a key to .env.local → " + errs.join(" | "),
   );
 }
+
+/**
+ * A fast, text-only lane for the analyst (spec + narrate) and RFx drafting —
+ * neither sends images, so a quick model like Groq's gpt-oss keeps both calls
+ * well inside Vercel's 60s function budget. Set FAST_API_KEY (+ optional
+ * FAST_BASE_URL / FAST_MODEL) to use it; otherwise falls back to the normal
+ * provider chain. Extraction always uses getProviderWithFallback() — it needs
+ * a multimodal model.
+ */
+export function getFastProvider(): Provider {
+  if (process.env.FAST_API_KEY) {
+    return new OpenRouterProvider(
+      process.env.FAST_API_KEY,
+      process.env.FAST_MODEL || "openai/gpt-oss-120b",
+      process.env.FAST_BASE_URL || "https://api.groq.com/openai/v1",
+    );
+  }
+  return getProviderWithFallback();
+}

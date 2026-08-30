@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getProviderWithFallback } from "@/lib/providers";
+import { getFastProvider } from "@/lib/providers";
 import { QUERY_GRAMMAR, NARRATE_RULES } from "@/lib/schema";
 import { AnalystEngine } from "@/lib/analyst";
 import { parseJSONLoose } from "@/lib/extract";
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const { question } = await req.json();
     if (!question) return NextResponse.json({ error: "No question" }, { status: 400 });
 
-    const provider = getProviderWithFallback();
+    const provider = getFastProvider();
     const engine = new AnalystEngine(grid as any, qual as any);
 
     // 1 — model writes a spec (no arithmetic)
