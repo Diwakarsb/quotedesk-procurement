@@ -53,10 +53,10 @@ export async function POST(req: NextRequest) {
     const started = Date.now();
     let rfx: any;
     try {
-      rfx = parseJSONLoose(await provider.complete(parts, 0, 4096));
+      rfx = parseJSONLoose(await provider.complete(parts, 0, 10000));
     } catch (e) {
-      if (Date.now() - started > 32_000) throw e; // no room for a retry
-      rfx = parseJSONLoose(await provider.complete(parts, 0, 4096));
+      if (Date.now() - started > 22_000) throw e; // no room for a retry in 60s
+      rfx = parseJSONLoose(await provider.complete(parts, 0, 10000));
     }
 
     // Defensive: guarantee the response contract exists on every line even if a

@@ -29,16 +29,25 @@ async function postJSON(url: string, body: any, headers: Record<string, string>)
   catch { throw new ProviderError(`Non-JSON response: ${text.slice(0, 300)}`); }
 }
 
-/** Google AI Studio. Recurring free tier, native multimodal. */
 /**
- * Models get retired. Rather than pinning one name and breaking on a Tuesday,
- * try a list newest-first and fall through on 404 / NOT_FOUND. GEMINI_MODEL,
- * when set, is tried first.
+ * Google AI Studio — recurring free tier, native multimodal.
+ *
+ * Google retired the classic `models/{m}:generateContent` endpoint for keys
+ * issued from mid-2026 (the `AQ.` prefix ones). The current surface is the
+ * Interactions API: POST /v1beta/interactions with { model, input, generation_config }.
+ * Input is a list of typed items; a turn is { type:"user_input", content:[…] }
+ * where each content item is { type:"text", text } or { type:"image"|"document",
+ * data:<base64>, mime_type }. The reply comes back as steps[]; the answer is the
+ * text of the step with type "model_output".
  */
+// Each model name is a separate free-tier quota bucket (~20 req/min), so
+// falling through the list also multiplies the effective rate limit. The
+// gemini-3.x models honour thinking_level:"minimal" and stay fast; the
+// aliases don't and reason slowly, so they sit last as a safety net.
 export const GEMINI_FALLBACKS = [
-  "gemini-3.7-flash",
   "gemini-3.6-flash",
-  "gemini-2.5-flash",
+  "gemini-3.5-flash",
+  "gemini-3.5-flash-lite",
   "gemini-flash-latest",
 ];
 
@@ -53,39 +62,61 @@ export class GeminiProvider implements Provider {
       : [...GEMINI_FALLBACKS];
   }
   async complete(parts: Part[], temperature = 0, maxTokens = 8192) {
+    const content: any[] = [];
+    for (const p of parts) {
+      if ("text" in p) { content.push({ type: "text", text: p.text }); continue; }
+      const mt = p.inline_data.mime_type;
+      content.push({
+        type: mt === "application/pdf" ? "document" : "image",
+        data: p.inline_data.data,
+        mime_type: mt,
+      });
+    }
+    const url = `https://generativelanguage.googleapis.com/v1beta/interactions?key=${this.key}`;
+    // gemini-3.x "thinks" by default and that reasoning draws from
+    // max_output_tokens — on a long extraction it starves the JSON. Ask for the
+    // lightest reasoning; models that reject the knob are retried without it.
+    const think = process.env.GEMINI_THINKING || "minimal";
+    const call = (m: string, withThink: boolean) => postJSON(url, {
+      model: m,
+      input: [{ type: "user_input", content }],
+      generation_config: withThink
+        ? { temperature, max_output_tokens: maxTokens, thinking_level: think }
+        : { temperature, max_output_tokens: maxTokens },
+    }, {});
+    const textOf = (d: any): string => (d?.steps || [])
+      .filter((s: any) => s?.type === "model_output")
+      .flatMap((s: any) => s?.content || [])
+      .filter((c: any) => c?.type === "text")
+      .map((c: any) => c.text)
+      .join("");
+
     const tried: string[] = [];
     for (const m of this.models) {
-      const url =
-        `https://generativelanguage.googleapis.com/v1beta/models/` +
-        `${m}:generateContent?key=${this.key}`;
       try {
-        const d = await postJSON(url, {
-          contents: [{ parts }],
-          generationConfig: {
-            temperature, maxOutputTokens: maxTokens, responseMimeType: "application/json",
-          },
-        }, {});
-        const t = d?.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (typeof t !== "string") throw new ProviderError("Gemini: unexpected shape");
+        let d;
+        try { d = await call(m, true); }
+        catch (te: any) {
+          if (!/thinking.level/i.test(te.message || "")) throw te;
+          d = await call(m, false); // this model doesn't take the knob
+        }
+        const out = textOf(d);
+        if (!out) throw new ProviderError("Gemini: no model_output text in response");
         this.name = `gemini:${m}`;
-        return t;
+        return out;
       } catch (e: any) {
         tried.push(m);
         const msg = e.message || "";
-        // Only fall through when the MODEL is the problem. A bad key or a rate
-        // limit must surface immediately, not be masked by four more attempts.
-        const retire = /404|NOT_FOUND|no longer available|is not found/i.test(msg);
-        if (!retire) throw e;
-        // Google names the replacement in the error. Trust it over our list.
-        const hinted = msg.match(/use\s+models\/([a-z0-9.\-]+)/i)?.[1];
-        if (hinted && !tried.includes(hinted) && !this.models.includes(hinted)) {
-          this.models.push(hinted);
-        }
+        // fall through when the MODEL is retired, OR when it is rate-limited —
+        // the next model has its own quota bucket. A bad key still surfaces.
+        const recoverable =
+          /404|NOT_FOUND|no longer available|is not found|not supported for '?model|invalid.*model/i.test(msg) ||
+          /429|RESOURCE_EXHAUSTED|too_many_requests|exceeded your current quota/i.test(msg);
+        if (!recoverable) throw e;
       }
     }
     throw new ProviderError(
-      `No available Gemini model. Tried: ${tried.join(", ")}. ` +
-      `Set GEMINI_MODEL in .env.local to a current model name.`);
+      `No available Gemini model (all rate-limited or retired). Tried: ${tried.join(", ")}.`);
   }
 }
 

@@ -28,9 +28,9 @@ export async function extractDocument(filename: string, buf: Buffer, rfx: any) {
             rfxContext(rfx) + "\n\n" + EXTRACTION_SCHEMA },
     ...(await toParts(filename, buf)),
   ];
-  // 6144 fits a full 30-line extraction; kept below 8192 so OpenRouter's
-  // pre-flight (prompt + max_tokens) × price check stays affordable.
-  const raw = await provider.complete(parts, 0, 6144);
+  // Generous ceiling: a 30-line extraction is ~4-6k tokens of JSON, and on a
+  // "thinking" model the reasoning tokens draw from the same budget.
+  const raw = await provider.complete(parts, 0, 12000);
   const out = parseJSONLoose(raw);
   out._source_file = filename;
   out._provider = provider.name;
