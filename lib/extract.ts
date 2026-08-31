@@ -28,7 +28,9 @@ export async function extractDocument(filename: string, buf: Buffer, rfx: any) {
             rfxContext(rfx) + "\n\n" + EXTRACTION_SCHEMA },
     ...(await toParts(filename, buf)),
   ];
-  const raw = await provider.complete(parts, 0, 8192);
+  // 4096 is ample for one vendor's extraction JSON and keeps the pre-flight
+  // cost check (prompt + max_tokens vs balance) affordable on a thin budget.
+  const raw = await provider.complete(parts, 0, 4096);
   const out = parseJSONLoose(raw);
   out._source_file = filename;
   out._provider = provider.name;
