@@ -28,9 +28,9 @@ export async function extractDocument(filename: string, buf: Buffer, rfx: any) {
             rfxContext(rfx) + "\n\n" + EXTRACTION_SCHEMA },
     ...(await toParts(filename, buf)),
   ];
-  // 4096 is ample for one vendor's extraction JSON and keeps the pre-flight
-  // cost check (prompt + max_tokens vs balance) affordable on a thin budget.
-  const raw = await provider.complete(parts, 0, 4096);
+  // 6144 fits a full 30-line extraction; kept below 8192 so OpenRouter's
+  // pre-flight (prompt + max_tokens) × price check stays affordable.
+  const raw = await provider.complete(parts, 0, 6144);
   const out = parseJSONLoose(raw);
   out._source_file = filename;
   out._provider = provider.name;
