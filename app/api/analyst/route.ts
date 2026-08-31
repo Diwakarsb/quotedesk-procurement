@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getFastProvider } from "@/lib/providers";
+import { getProviderWithFallback } from "@/lib/providers";
 import { QUERY_GRAMMAR, NARRATE_RULES } from "@/lib/schema";
 import { AnalystEngine } from "@/lib/analyst";
 import { parseJSONLoose } from "@/lib/extract";
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const { question } = await req.json();
     if (!question) return NextResponse.json({ error: "No question" }, { status: 400 });
 
-    const provider = getFastProvider();
+    const provider = getProviderWithFallback();
     const engine = new AnalystEngine(grid as any, qual as any);
 
     // 1 — model writes a spec (no arithmetic)
@@ -28,16 +28,14 @@ export async function POST(req: NextRequest) {
     // 2 — code executes it. This result is the authority.
     const result = engine.execute(spec);
 
-    // 3 — model narrates the verified result. Prompt + max_tokens are kept
-    // under ~7k so the two calls fit a fast provider's per-minute token limit
-    // (Groq free tier = 8000 TPM).
+    // 3 — model narrates the verified result
     const narration = await provider.complete([
       { text: NARRATE_RULES },
       { text: "BUYER QUESTION:\n" + question },
       { text: "QUERYSPEC EXECUTED:\n" + JSON.stringify(spec, null, 1) },
       { text: "RESULT (authoritative — all numbers must come from here):\n" +
-              JSON.stringify(result, null, 1).slice(0, 9000) },
-    ], 0.2, 1536);
+              JSON.stringify(result, null, 1).slice(0, 13000) },
+    ], 0.2, 2048);
 
     return NextResponse.json({ ok: true, spec, result, narration, provider: provider.name });
   } catch (e: any) {
